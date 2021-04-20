@@ -1,8 +1,11 @@
-require('dotenv').config({ path: 'config.env' })
-
 const express = require('express')
 const app = express()
 const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+
+const connectDB = require('./database/connection');
+
+dotenv.config( { path : 'config.env'} )
 const PORT = process.env.PORT || 4000
 app.use(express.static('public'))
 app.set('view engine', 'ejs')
@@ -10,19 +13,8 @@ app.set('view engine', 'ejs')
 //model:
 const ProductItem = require('./models/productItem')
 
-
-//mongoose se une a nuestro DB y luego al port
-//Función asincrónica: usamos .then y .catch
-//La conexión debe realizarse antes del app.get:
-mongoose.connect('mongodb://localhost:27017/NewDB', {useNewUrlParser: true, useUnifiedTopology: true})
-    // eventuell addieren: , useFindAndModify: false}
-    .then(result => {
-        console.log('Connected to my DB')
-        //primero debe funcionar el servidor, y luego nos conectamos a la DB,así que ponemos app.listen aquí!
-        app.listen(PORT, () => console.log(`http://localhost: ${PORT}`))
-    })
-    .catch(err => console.log(err))
-
+ // mongodb connection
+connectDB();
 
 
 //en la pág. index es donde nos saldrá la galería con todos los productos.//para que se nos muestre el DB, necesitamos el método .find (.then, .catch)
@@ -148,3 +140,5 @@ app.get('/weekly', (req, res) => {
 app.use((req, res) => {
     res.status(404).render('404')
 })
+
+app.listen(PORT, ()=> { console.log(`Server is running on http://localhost:${PORT}`)});
