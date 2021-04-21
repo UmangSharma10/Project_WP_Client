@@ -6,7 +6,7 @@
     <hr id="line-short">
 
     <form action="/add" method="POST">
-        <input type="text" name="productName" placeholder="Product-name">
+        <input type="text" name="productName" id="productName" placeholder="Product-name">
         <input type="text" name="pictureLink" placeholder="Url Picture">
         <input type="text" name="company" placeholder="Company">
         <input type="number" name="price" placeholder= "Price in $">
@@ -14,7 +14,7 @@
 
         <input type="text" name="shopLink" placeholder="Link-shop">
 
-        <input type="submit" value="Add Product">
+        <input type="submit" onclick="notifyMe(document.getElementById('productName').value)" value="Add Product">
     </form>
 </section>
 
