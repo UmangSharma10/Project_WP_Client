@@ -12,6 +12,7 @@ app.set('view engine', 'ejs')
 
 //model:
 const ProductItem = require('./models/productItem')
+const Users = require('./models/login')
 
  // mongodb connection
 connectDB();
@@ -31,6 +32,31 @@ app.get('/', (req, res) => {
 //podríamos hacer un app.post en lugar de app.get, pej si tenemos un formulario
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+
+app.get("/login", (req, res) => {
+    res.render("login");
+    console.log("hello");
+})
+
+app.post("/login", async(req, res) => {
+    try{
+        const email = req.body.email;
+        const password = req.body.password;
+        console.log(`${email} and password is ${password}`);
+        const useremail = await Users.findOne({email:email});
+        //res.send(useremail);
+        if(useremail.password === password){
+            res.status(201).render("add");
+            console.log("Valid");
+        }else{
+            res.send("Invalid user id or password");
+        }
+    }
+    catch(error){
+        console.log("Invalid");
+        res.status(400).send("invalid email");
+    }
+})
 
 app.get('/add', (req, res) => {
     ProductItem.find()

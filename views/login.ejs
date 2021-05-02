@@ -1,0 +1,33 @@
+<%- include('./partials/head') %>
+<!-- <%- include('./partials/nav') %> -->
+
+<div class="container">
+
+    <form id="login" class="form-login" action="/login" method="POST">
+
+        <div class="header">
+        
+            <h3>Log In</h3>
+        </div>
+        
+        <div class="sep"></div>
+
+        <div class="inputs">
+        
+            <input type="email" class="form-control" placeholder="e-mail" autofocus required name="email"/>
+        
+            <input type="password" class="form-control" placeholder="Password" required name="password"/>
+            
+            <div class="checkboxy">
+                <input name="cecky" id="checky" value="1" type="checkbox" /><label class="terms">I accept the terms of use</label>
+            </div>
+            
+            <button id="submit" type="submit" href="/">LOG IN</button>
+        
+        </div>
+
+    </form>
+
+</div>
+
+<!-- <%- include('./partials/footer')%> -->
