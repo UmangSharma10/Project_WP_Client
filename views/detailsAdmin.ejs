@@ -1,12 +1,12 @@
 <%- include('./partials/head') %>
-<%- include('./partials/nav') %>
+<%- include('./partials/navAdmin') %>
 
 <section id="detailsSec" class="main">
     <article class="product-wrapper">
-        <!-- <div class="Buttons">
+        <div class="Buttons">
             <button onclick="toggleHide()" id="editButton">Edit</button>
-            <a href="/details/<%=product.id%>/delete" id="deleteButton">Delete</a>
-        </div> -->
+            <a href="/detailsAdmin/<%=product.id%>/delete" id="deleteButton">Delete</a>
+        </div>
         <figure>
             <img class="details__img" src="<%= product.pictureLink %>"" alt="">
             <figcaption>
@@ -22,7 +22,7 @@
         <a class="fig__link" href="<%= product.shopLink %>" target="_blank" id="buyButton">Buy Product</a>
     </article>
    <!-- formulario que se va a abrir con los datos ya escritos por el ususario, y donde él pueda cambiarlos  -->
-    <form action="/details/<%=product.id%>/edit" method="POST" id="myForm" class="hide">
+    <form action="/detailsAdmin/<%=product.id%>/edit" method="POST" id="myForm" class="hide">
         <input type="text" name="productName" placeholder="Product-name" value="<%= product.productName %>">
         <input type="text" name="pictureLink" placeholder="Url Picture" value="<%= product.pictureLink %>">
         <input type="text" name="company" placeholder="Company" value="<%= product.company %>">
