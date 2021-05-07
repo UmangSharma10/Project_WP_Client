@@ -2,7 +2,7 @@
     margin: 0;
     padding: 0;
     font-family: 'Karla', sans-serif;
-    box-sizing: border-box;
+    /* box-sizing: border-box; */
 }
 
 /**** Navigation *****/
@@ -10,7 +10,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 85%;
+    width: 95%;
     margin: 0 auto;
 }
 
@@ -481,6 +481,8 @@ h2 {
     font-size: 24px;
     font-weight: bold;
     margin-bottom: 5px;
+    text-align: center;
+    margin-top: 25px;
 }
 
 #login .header p {
@@ -627,3 +629,61 @@ input:-moz-placeholder {
     opacity: 1;
     right: 0;
   }
+
+  @import url(https://fonts.googleapis.com/css?family=Oswald:400);
+
+.navigation {
+  width: 100%;
+  background-color: black;
+}
+
+.imgProfile {
+  width: 25px;
+  border-radius: 50px;
+  float: left;
+}
+
+.logout {
+  font-size: .8em;
+  font-family: 'Oswald', sans-serif;
+	position: relative;
+  right: -18px;
+  bottom: -4px;
+  overflow: hidden;
+  letter-spacing: 3px;
+  opacity: 0;
+  transition: opacity .45s;
+  -webkit-transition: opacity .35s;
+  
+}
+
+.buttonLogOut {
+	text-decoration: none;
+	float: right;
+  padding: 12px;
+  margin: 15px;
+  color: white;
+  width: 25px;
+  background-color: black;
+  transition: width .35s;
+  -webkit-transition: width .35s;
+  overflow: hidden
+  
+}
+
+.alink:hover {
+    width: 80%;
+    height: 20px;
+}
+
+.alink:hover .logout{
+  opacity: .9;
+}
+
+.greyBackground{
+    background-color: #323A45;
+}
+
+.alink{
+    opacity: 1;
+}
