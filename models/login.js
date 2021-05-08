@@ -1,40 +1,44 @@
-// // require modules for the User Model
-// let mongoose = require('mongoose');
-// //let passportLocalMongoose = require('passport-local-mongoose');
+//required modules for the USER model
 
-const mongoose = require('mongoose')
+let mongoose = require('mongoose');
+let passportLocalMongoose = require('passport-local-mongoose');
 
-//Schema aus mongoose holen (class constructor function, also mayúsculas!)
-const Schema = mongoose.Schema
-let UserSchema = new Schema
-(
-{
-     email: 
+let User = mongoose.Schema(
      {
-          type: String,
-          default: '',
-          trim: true,
-          required: 'username is required'
+          email:
+          {
+               type: String,
+               default: '',
+               trim: true,
+               required: 'email address is required'
+          },
+
+          //    password: 
+          //    {
+          //        type: String,
+          //        default: '',
+          //        trim: true,
+          //        required: 'password is required'
+          //    }    
+          created: {
+               type: Date,
+               default: Date.now
+          },
+          update: {
+               type: Date,
+               default: Date.now
+          }
      },
-     
-        password: 
-        {
-            type: String,
-            default: '',
-            trim: true,
-            required: 'password is required'
-        },
-    
-     
-},
-// {
-//      collection: "users"
-// }
+     {
+          collection: "users"
+     }
+
 );
 
-// configure options for User Model
+let options=({missingPasswordError:'Wrong / Missing Password'});
 
-// let options = ({ missingPasswordError: 'Wrong / Missing Password'});
-// User.plugin(passportLocalMongoose, options);
-const User = mongoose.model('User', UserSchema)
-module.exports = User
+User.plugin(passportLocalMongoose,options);
+
+
+// const User = mongoose.model('User', UserSchema)
+module.exports.User = mongoose.model('User',User);
