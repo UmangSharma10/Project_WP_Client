@@ -110,6 +110,7 @@ figcaption {
     width: 100%;
     height: 90%;
     object-fit: contain;
+    margin-top: 5%;
 }
 
 img:hover {
@@ -423,9 +424,15 @@ h2 {
         flex-direction: column;
     }
     .header__item  {
-        padding: 1.5vh 0;
-        background: rgb(233, 230, 230);
-        width: 100%;
+      padding: 0.5vh 0;
+      /* background: rgb(233, 230, 230); */
+      width: 15rem;
+      background-color: black;
+      /* margin-top: 5%; */
+      margin-left: 38%;
+      padding-right: 10%;
+      border: 1px solid white;
+      border-radius: 5%;
     }
     .header-nav {
         height: 7vh;
