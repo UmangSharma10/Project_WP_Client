@@ -12,7 +12,6 @@ app.set('view engine', 'ejs')
 
 //model:
 const ProductItem = require('./models/productItem')
-const Admin = require('./models/login')
 
 // mongodb connection
 connectDB();
@@ -55,25 +54,26 @@ app.get('/logout', requireAuth, (req, res, next) => {
     req.logOut();
     res.redirect('/login');
 });
-app.get('/admin', requireAuth, (req, res, next) => {
+app.get('/', (req, res, next) => {
     ProductItem.find()
     .then(result => {
         const productData = result
         const randomData = productData.sort(() => .5 - Math.random()).slice(0, 6)
-        
-        res.render('indexAdmin',{ productData, randomData })
+        console.log(req.user);
+        res.render('index',{ productData, randomData, displayName:req.user?req.user.username:'' })
     })
     .catch(err => console.log(err))
     
 });
 app.get('/login', (req, res, next) => {
+    console.log("in login");
     if (!req.user) {
         res.render('login', {
             title: 'Login',
             messages: req.flash('loginMessage')
         });
     } else {
-        return res.redirect('/admin');
+        return res.redirect('/');
     }
 });
 //Get Route for displaying the Register page 
@@ -89,7 +89,7 @@ app.get('/register', (req, res, next) => {
 
     } else {
         //if user does exist
-        return res.render('login');
+        return res.redirect('/login');
     }
 });
 
@@ -123,6 +123,7 @@ app.post('/register', (req, res, next) => {
             //so registeration is successful
 
             //redirect the user and authenticate them 
+            console.log('in else');
             return passport.authenticate('local')(req, res, () => {
                 res.redirect('/login');
             });
@@ -149,7 +150,7 @@ app.post('/login', (req, res, next) => {
                 if (err) {
                     return next(err);
                 }
-                return res.redirect('/admin');
+                return res.redirect('/');
             })
         })(req, res, next);
 });
@@ -166,7 +167,7 @@ function requireAuth(req, res, next) {
 app.get('/', (req, res) => {
     ProductItem.find()
     .then(result => {
-        res.render('index', {productData: result})
+        res.render('index', {productData: result, displayName:req.user?req.user.username:'' })
     })
     .catch(err => console.log(err))
 })
@@ -175,159 +176,27 @@ app.get('/', (req, res) => {
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-// app.get("/login", (req, res) => {
-//     res.render("login");
-// })
 
-// app.post("/login", async(req, res) => {
-//     try{
-//         const email = req.body.email;
-//         const password = req.body.password;
-//         console.log(`${email} and password is ${password}`);
-//         const useremail = await Admin.findOne({email:email});
-//         //res.send(useremail);
-//         if(useremail.password === password){
-//             ProductItem.find()
-//             .then(result => {
-//                 res.render('indexAdmin', {productData: result});
-//             })
-//             .catch(err => console.log(err))
-//         }else{
-//             res.send("Invalid user id or password");
-//         }
-//     }
-//     catch(error){
-//         console.log("Invalid");
-//         res.status(400).send("invalid email");
-//     }
-// })
-
-app.get('/add', requireAuth, (req, res) => {
-    ProductItem.find()
-        .then(result => {
-            // console.log('result:', result)
-            // console.log('result length:', result.length);
-            const productData = result
-            const randomData = productData.sort(() => .5 - Math.random()).slice(0, 6)
-            //  console.log('randomData .5: ', randomData);
-            res.render('add', { productData, randomData })
-        })
-        .catch(err => console.log(err))
-})
-
-
-app.post('/add', requireAuth, (req, res) => {
-    // console.log(req.body);
-    const newProductItem = new ProductItem({
-        productName: req.body.productName,
-        pictureLink: req.body.pictureLink,
-        company: req.body.company,
-        price: req.body.price,
-        description: req.body.description,
-        shopLink: req.body.shopLink
-    })
-    // console.log("newproducttem?: ", newProductItem)
-    newProductItem.save()
-        .then(result => {
-            // res.send(result)
-            res.redirect('/added')
-        })
-        .catch(err => console.log(err))
-})
-
-app.get('/added', requireAuth, (req, res) => {
-    res.render('added')
-})
-//Queremos ver detalles de un producto concreto:
 app.get('/details/:productId', (req, res) => {
     console.log('req.params.productId', req.params.productId);
     // res.end()
     ProductItem.findById(req.params.productId)
   .then((result) => {
     //   res.send(result)
-      res.render('details', {product: result})
+      res.render('details', {product: result,displayName:req.user?req.user.username:'' })
   })
   .catch(err => console.log(err))
 })
 
-//Admin
-app.get('/detailsAdmin/:productId', (req, res) => {
-    console.log('req.params.productId', req.params.productId);
-    // res.end()
-    ProductItem.findById(req.params.productId)
-  .then((result) => {
-    //   res.send(result)
-      res.render('detailsAdmin', {product: result})
-  })
-  .catch(err => console.log(err))
-})
-
-//Queremos editar los datos de un producto:
-app.post('/details/:id/edit', requireAuth, (req, res) => {
-    console.log(req.body)
-    // const updatedProduct = {
-    //     productName: req.body.productName, 
-    //     pictureLink: req.body.pictureLink, 
-    //     company: req.body.company,
-    //     price: req.body.price, 
-    //     description: req.body.description,
-    //     shopLink: req.body.shopLink
-    // }
-
-    ProductItem.findByIdAndUpdate(req.params.id, req.body)
-        .then(result => {
-            res.redirect(`/details/${req.params.id}`)
-        })
-        .catch(err => console.log(err))
-})
-
-//Admin
-app.post('/detailsAdmin/:id/edit', requireAuth, (req, res) => {
-    console.log(req.body)
-    // const updatedProduct = {
-    //     productName: req.body.productName, 
-    //     pictureLink: req.body.pictureLink, 
-    //     company: req.body.company,
-    //     price: req.body.price, 
-    //     description: req.body.description,
-    //     shopLink: req.body.shopLink
-    // }
-
-    ProductItem.findByIdAndUpdate(req.params.id, req.body)
-        .then(result => {
-            res.redirect(`/detailsAdmin/${req.params.id}`)
-        })
-        .catch(err => console.log(err))
-})
-
-
-
-
-app.get('/deleted', requireAuth, (req, res) => {
-    res.render('deleted')
-})
-
-//Eliminar un producto:(lo que esté detrás de ":", debe estar también detrás de "req.params....")
-app.get('/details/:productId/delete', requireAuth, (req, res) => {
-    ProductItem.findByIdAndDelete(req.params.productId)
-        .then(result => res.redirect('/deleted'))
-        .catch(err => console.log(err))
-})
-//Admin
-app.get('/detailsAdmin/:productId/delete', requireAuth, (req, res) => {
-    ProductItem.findByIdAndDelete(req.params.productId)
-        .then(result => res.redirect('/deleted'))
-        .catch(err => console.log(err))
-})
 
 
 //less than$30 Page
-app.get('/lessThan30', (req, res) => {
-    ProductItem.find({"price": { "$lt":"30" }})
+app.get('/lessThan1500', (req, res) => {
+    ProductItem.find({"price": { "$lt":"1500" }})
     // console.log("resultados:", resultados)
     .then(result => {
         console.log(result);
-        res.render('lessThan30', {cheapData: result})
+        res.render('lessThan1500', {cheapData: result, displayName:req.user?req.user.username:'' })
     })
     .catch(err => console.log(err))
 })
@@ -337,7 +206,7 @@ app.get('/weekly', (req, res) => {
     ProductItem.find()
     .then(result => {
         const weeklyData = result.sort(() => .5 - Math.random()).slice(0,3)
-    res.render('weekly', {weeklyData})
+    res.render('weekly', {weeklyData, displayName:req.user?req.user.username:'' })
     })
     .catch(err => console.log(err))
 })
