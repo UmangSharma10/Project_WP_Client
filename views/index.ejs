@@ -11,7 +11,11 @@
             <figcaption>
                 <a class="fig__link" href="/single/<%= product.id %>" target="_blank"></a>
                     <%= product.productName %>
-                    <span class="company"><%= product.company %></span>
+                    <% if(typeof displayName == 'string' && displayName ) {%>
+                        <span class="promo">Promo Code: <%= product.promo %></span> 
+                        <% }else{ %>  
+                            <span class="promo">Login To Get Promo Code</span>
+                         <% } %>
                 <p class="price">₹<%= product.price %></p>
             </figcaption>
         </figure>

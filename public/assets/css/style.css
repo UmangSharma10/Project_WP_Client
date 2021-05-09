@@ -92,7 +92,7 @@ figcaption {
     line-height: 3vh;
 }
 
-.company {
+.promo {
     color: #848484;
     display: block;
 }
@@ -109,7 +109,7 @@ figcaption {
 .home__img {
     width: 100%;
     height: 90%;
-    object-fit: cover;
+    object-fit: contain;
 }
 
 img:hover {
@@ -207,7 +207,7 @@ input[type=submit]:hover, input:hover, textarea:hover{
 .random__img, .less__img {
     height: 55vh;
     width: 100%;
-    object-fit: cover;
+    object-fit: contain;
 }
 
 .hide {
@@ -299,11 +299,13 @@ input[type=submit]:hover, input:hover, textarea:hover{
     display: flex;
     flex-direction: column;
     margin: 0 auto;
-    width: 80%;
+    width: 35%;
 }
 
 .details__img {
     width: 100%;
+    margin-top: 5%;
+    margin-bottom: 5%;
 }
 
 .details-h4, .details-p{
@@ -789,7 +791,9 @@ p {
   padding: 75px 0 0;
   background-color: #151414;
   position: relative;
-  z-index: 2; }
+  z-index: 2;
+  margin-top: 5%;
+}
   .dk-footer .contact-us {
     margin-top: 0;
     margin-bottom: 30px;
@@ -1015,8 +1019,9 @@ p {
       background: #FA6742;
       border-color: #FA6742; }
 
-  
-      
-
+      .responsive {
+        width: 100%;
+        height: auto;
+      }
 
       
